@@ -3,6 +3,8 @@ main = "src/index.ts"
 compatibility_date = "2023-02-18"
 
 [vars]
+BOT_ID="U02RWTNJFPS"
+
 # The necessary secrets are:
 # - SLACK_BOT_TOKEN
 # Run `echo <VALUE> | wrangler secret put <NAME>` for each of these
