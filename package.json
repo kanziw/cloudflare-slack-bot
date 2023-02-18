@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "dev": "wrangler dev",
     "test": "vitest run",
-    "publish": "wrangler publish"
+    "publish": "wrangler publish",
+    "logs": "wrangler tail cloudflare-slack-bot --format=pretty"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230215.0",
