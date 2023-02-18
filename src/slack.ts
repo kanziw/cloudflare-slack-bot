@@ -1,4 +1,7 @@
-interface BaseEvent { type: 'url_verification' | 'event_callback' }
+interface BaseSlackEvent { type: 'url_verification' | 'event_callback' | unknown }
+interface BaseEvent { type: 'app_mention' | unknown }
+
+export type SlackEvent = UrlVerificationEvent | EventCallbackEvent
 
 /**
  * Sample Value
@@ -8,7 +11,7 @@ interface BaseEvent { type: 'url_verification' | 'event_callback' }
   type: 'url_verification'
 }
  */
-interface UrlVerificationEvent extends BaseEvent {
+interface UrlVerificationEvent extends BaseSlackEvent {
   token: string
   challenge: string
   type: 'url_verification'
@@ -67,21 +70,11 @@ interface UrlVerificationEvent extends BaseEvent {
   "event_context": "4-eyJldCI6ImFwcF9tZW50aW9uIiwidGlkIjoiVDBDOTQ2VjRHIiwiYWlkIjoiQTAyUjlEVjkyRVEiLCJjaWQiOiJDMEM5Mk1KRlEifQ"
 }
  */
-interface EventCallbackEvent extends BaseEvent {
+interface EventCallbackEvent extends BaseSlackEvent {
   token: string
   team_id: string
   api_app_id: string
-  event: {
-    client_msg_id: string
-    type: 'app_mention'
-    text: string
-    user: string
-    ts: string
-    blocks: Block[]
-    team: string
-    channel: string
-    event_ts: string
-  }
+  event: Event
   type: 'event_callback'
   event_id: string
   event_time: number
@@ -90,7 +83,32 @@ interface EventCallbackEvent extends BaseEvent {
   event_context: string
 }
 
-type Block = unknown
+export type Event = AppMentionEvent
+
+export interface AppMentionEvent extends BaseEvent {
+  client_msg_id: string
+  type: 'app_mention'
+  text: string
+  user: string
+  ts: string
+  blocks: Block[]
+  team: string
+  channel: string
+  event_ts: string
+}
+
+type Block = {
+  type: 'rich_text'
+  block_id: string
+  elements: Element[]
+} | unknown
+
+type Element =
+| { type: 'rich_text_section', elements: Element[] }
+| { type: 'user', user_id: string }
+| { type: 'text', text: string }
+| unknown
+
 interface Authentication {
   enterprise_id: null
   team_id: string
@@ -98,5 +116,3 @@ interface Authentication {
   is_bot: boolean
   is_enterprise_install: boolean
 }
-
-export type SlackEvent = UrlVerificationEvent | EventCallbackEvent
