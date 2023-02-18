@@ -1,8 +1,8 @@
 {
-  "name": "cloudflare-worker-template",
+  "name": "cloudflare-slack-bot",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kanziw/cloudflare-worker-template.git"
+    "url": "git+https://github.com/kanziw/cloudflare-slack-bot.git"
   },
   "author": {
     "name": "Jiwoong Jung",

@@ -1288,9 +1288,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cloudflare-worker-template@workspace:.":
+"cloudflare-slack-bot@workspace:.":
   version: 0.0.0-use.local
-  resolution: "cloudflare-worker-template@workspace:."
+  resolution: "cloudflare-slack-bot@workspace:."
   dependencies:
     "@cloudflare/workers-types": ^4.20230215.0
     "@miniflare/core": ^2.12.0
