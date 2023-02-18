@@ -1,7 +1,7 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true
+    node: true,
   },
   extends: 'standard-with-typescript',
   overrides: [
@@ -9,9 +9,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
-    project: ['./tsconfig.json']
+    project: ['./tsconfig.json'],
   },
   rules: {
-    '@typescript-eslint/strict-boolean-expressions': 'off'
-  }
+    'comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    '@typescript-eslint/strict-boolean-expressions': 'off',
+  },
 }

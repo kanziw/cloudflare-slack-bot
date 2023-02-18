@@ -21,7 +21,7 @@ export default {
   async fetch (
     request: Request,
     env: Env,
-    _ctx: ExecutionContext
+    _ctx: ExecutionContext,
   ): Promise<Response> {
     if (!slackCli) {
       slackCli = slackClient({ botToken: env.SLACK_BOT_TOKEN })
@@ -43,7 +43,7 @@ export default {
     }
 
     return new Response('success')
-  }
+  },
 }
 
 async function handleAppMentionEvent (slackCli: SlackClient, event: AppMentionEvent): Promise<void> {
@@ -64,7 +64,7 @@ async function handleAppMentionEvent (slackCli: SlackClient, event: AppMentionEv
 function json (obj: object): Response {
   return new Response(JSON.stringify(obj), {
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   })
 }

@@ -13,13 +13,13 @@ export const slackClient = ({ botToken }: Deps): SlackClient => {
         method: 'POST',
         headers: new Headers({
           'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + botToken
+          Authorization: 'Bearer ' + botToken,
         }),
         body: JSON.stringify({
           channel,
-          text
-        })
+          text,
+        }),
       })
-    }
+    },
   }
 }
