@@ -1,8 +1,7 @@
-import { Octokit } from '@octokit/rest'
 import { type AppMentionEvent, slackClient, type SlackClient, parseSlackRequest } from './slack'
 import to from 'await-to-js'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
-import { parseRef } from './github'
+import { type GitHubClient, githubClient, parseRef } from './github'
 
 export interface Env {
   // Vars
@@ -28,7 +27,7 @@ interface Config {
   slackVerificationCode: string
 
   slackCli: SlackClient
-  githubCli: Octokit['rest']
+  githubCli: GitHubClient
 }
 let cfg: Config
 
@@ -39,14 +38,11 @@ export default {
     _ctx: ExecutionContext,
   ): Promise<Response> {
     if (!cfg) {
-      const octokit = new Octokit({
-        auth: env.GH_PERSONAL_ACCESS_TOKEN,
-      })
       cfg = {
         botId: env.BOT_ID,
         slackVerificationCode: env.SLACK_VERIFICATION_CODE,
         slackCli: slackClient({ botToken: env.SLACK_BOT_TOKEN }),
-        githubCli: octokit.rest,
+        githubCli: githubClient({ token: env.GH_PERSONAL_ACCESS_TOKEN }),
       }
     }
 
