@@ -20,7 +20,7 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
       event.channel,
       `*Deployment failed*
 > Supported environments: ${environmentNames.map(n => `\`${n}\``).join(', ')}
-> If this is a new deployment -> <https://github.com/${owner}/${repo}/settings/environments/new|Click>`,
+> If this is a new deployment -> <https://github.com/${repos.owner}/${repos.repo}/settings/environments/new|Click>`,
     )
     return
   }
