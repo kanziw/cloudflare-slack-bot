@@ -86,7 +86,7 @@ async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, ev
       break
     case 'deploy': {
       let [environment, fullRepo, ref] = args
-      if (environment !== 'produdction') {
+      if (environment !== 'production') {
         await slackCli.postMessage(event.channel, 'Only production environment is supported')
         return
       }
@@ -101,7 +101,7 @@ async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, ev
         ref = ''
       }
 
-      await githubCli.repos.createDeployment({ owner, repo, ref })
+      await githubCli.repos.createDeployment({ owner, repo, ref, environment })
       break
     }
     default:
