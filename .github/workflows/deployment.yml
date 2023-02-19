@@ -1,19 +1,19 @@
 name: Deployment
 
-# concurrency: production
+concurrency: production
 
 on:
-  # push:
-  #   branches:
-  #     - main
-  # workflow_dispatch:
-  #   inputs:
-  #     environment:
-  #       description: Environment to deploy
-  #       type: environment
-  #       required: true
-  #       default: staging
-  deployment:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Environment to deploy
+        type: environment
+        required: true
+        default: staging
+  # deployment:
 
 jobs:
   deploy:
