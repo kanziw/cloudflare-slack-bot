@@ -6,13 +6,13 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Environment to deploy
-        type: environment
-        required: true
-        default: staging
+  # workflow_dispatch:
+  #   inputs:
+  #     environment:
+  #       description: Environment to deploy
+  #       type: environment
+  #       required: true
+  #       default: staging
   deployment:
 
 jobs:
