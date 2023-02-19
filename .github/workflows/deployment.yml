@@ -20,10 +20,10 @@ jobs:
             console.log(' EVENT', JSON.stringify(context.event ?? {}, null, 2));
             console.log(' PAYLOAD', JSON.stringify(context.payload ?? {}, null, 2));
             console.log(' REPO', JSON.stringify(context.repo ?? {}), null, 2);
-      - run: echo "${{ github }}"
-      - run: echo "${{ vars }}"
-      - run: echo "${{ github.event }}"
-      - run: echo "${{ github.event.enviconment }}"
+      - run: echo "${{ JSON.stringify(github, null, 2) }}"
+      - run: echo "${{ JSON.stringify(vars, null, 2) }}"
+      - run: echo "${{ JSON.stringify(event, null, 2) }}"
+      - run: echo "${{ github.event.environment }}"
       - run: echo "${{ github.event_name }}"
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
