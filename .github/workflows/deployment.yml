@@ -6,7 +6,8 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
+  deployment:
+    environments: [production]
 
 jobs:
   deploy:
