@@ -1,7 +1,9 @@
-import { type AppMentionEvent, slackClient, type SlackClient, parseSlackRequest } from './slack'
+import { slackClient, parseSlackRequest } from './slack'
 import to from 'await-to-js'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
-import { type GitHubClient, githubClient, parseRef } from './github'
+import { githubClient } from './github'
+import { type Config } from './types'
+import { handleAppMentionEvent } from './handler'
 
 export interface Env {
   // Vars
@@ -13,22 +15,6 @@ export interface Env {
   GH_PERSONAL_ACCESS_TOKEN: string
 }
 
-const helpMessage = `I have the following features
-
-\`@botname echo <message>\`
-> Echoes the message back to the channel
-
-\`@botname deploy <repo> <environment> <ref>\`
-> Trigger GitHub Deployment for the given repo, environment and ref
-`
-
-interface Config {
-  botId: string
-  slackVerificationCode: string
-
-  slackCli: SlackClient
-  githubCli: GitHubClient
-}
 let cfg: Config
 
 export default {
@@ -73,42 +59,4 @@ export default {
 
     return new Response('success')
   },
-}
-
-async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, event: AppMentionEvent): Promise<void> {
-  const [command, ...args] = event.text.trim().replace(`<@${botId}> `, '').split(' ')
-
-  switch (command) {
-    case 'echo':
-      if (args.length) {
-        await slackCli.postMessage(event.channel, args.join(' '))
-      }
-      break
-    case 'deploy': {
-      const [fullRepo, environment, ref] = args
-
-      let [owner, repo] = fullRepo.split('/')
-      if (!repo) {
-        repo = owner
-        owner = 'kanziw'
-      }
-
-      if (environment !== 'production') {
-        await slackCli.postMessage(event.channel, 'Only production environment is supported')
-        return
-      }
-
-      await githubCli.repos.createDeployment({
-        owner,
-        repo,
-        ref: parseRef(ref),
-        environment,
-        auto_merge: false,
-        required_contexts: [],
-      })
-      break
-    }
-    default:
-      await slackCli.postMessage(event.channel, helpMessage)
-  }
 }
