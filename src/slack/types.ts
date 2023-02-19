@@ -1,12 +1,17 @@
-interface BaseSlackEvent { type: 'url_verification' | 'event_callback' | unknown }
-interface BaseEvent { type: 'app_mention' | unknown }
+interface BaseSlackEvent {
+  type: 'url_verification' | 'event_callback' | unknown
+}
+interface BaseEvent {
+  // available types: https://api.slack.com/events?filter=Events
+  type: 'app_mention' | unknown
+}
 
 export type SlackEvent = UrlVerificationEvent | EventCallbackEvent
 
 /**
  * Sample Value
 {
-  token: 'xqDNBFJKHK3I7g68iTqjPmZV',
+  token: 'XXXXXXXXXXXXXXXXXXX',
   challenge: '8nbLGUs5Biu0vjvxBOmFdUiFxxJlyxiGFahI7EbERhuxqVb3zqNJ',
   type: 'url_verification'
 }
@@ -20,7 +25,7 @@ interface UrlVerificationEvent extends BaseSlackEvent {
 /**
  * Sample Value
 {
-  "token": "xqDNBFJKHK3I7g68iTqjPmZV",
+  "token": "XXXXXXXXXXXXXXXXXXX",
   "team_id": "T0C946V4G",
   "api_app_id": "A02R9DV92EQ",
   "event": {

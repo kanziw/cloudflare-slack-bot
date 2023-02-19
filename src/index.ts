@@ -1,5 +1,6 @@
-import { type AppMentionEvent, type SlackEvent } from './slack'
-import { slackClient, type SlackClient } from './slackClient'
+import { type AppMentionEvent, slackClient, type SlackClient, parseSlackRequest } from './slack'
+import to from 'await-to-js'
+import { getReasonPhrase, StatusCodes } from 'http-status-codes'
 
 export interface Env {
   // Vars
@@ -7,6 +8,7 @@ export interface Env {
 
   // Secrets
   SLACK_BOT_TOKEN: string
+  SLACK_VERIFICATION_CODE: string
 }
 
 const helpMessage = `I have the following features
@@ -17,40 +19,49 @@ const helpMessage = `I have the following features
 
 interface Config {
   botId: string
+  slackVerificationCode: string
+
   slackCli: SlackClient
 }
 let cfg: Config
 
 export default {
   async fetch (
-    request: Request,
+    req: Request,
     env: Env,
     _ctx: ExecutionContext,
   ): Promise<Response> {
     if (!cfg) {
       cfg = {
         botId: env.BOT_ID,
+        slackVerificationCode: env.SLACK_VERIFICATION_CODE,
         slackCli: slackClient({ botToken: env.SLACK_BOT_TOKEN }),
       }
     }
 
-    const body = await request.json<SlackEvent>()
-    console.log(' [DEBUG] BODY', JSON.stringify(body, null, 2))
+    const [err, result] = await to(parseSlackRequest(req, cfg.slackVerificationCode))
+    if (err ?? !result) {
+      return new Response(
+        err?.message ?? getReasonPhrase(StatusCodes.UNAUTHORIZED),
+        { status: StatusCodes.UNAUTHORIZED },
+      )
+    }
 
-    if (body.type === 'url_verification') {
-      return new Response(JSON.stringify(body), {
+    const { event } = result
+    if (event.type === 'url_verification') {
+      return new Response(JSON.stringify(event), {
         headers: {
           'Content-Type': 'application/json',
         },
       })
     }
 
-    if (body.type !== 'event_callback' || !body.event) {
+    if (event.type !== 'event_callback' || !event.event) {
       throw new Error('Unknown type or event')
     }
 
-    switch (body.event.type) {
-      case 'app_mention': await handleAppMentionEvent(cfg, body.event); break
+    switch (event.event.type) {
+      case 'app_mention': await handleAppMentionEvent(cfg, event.event); break
     }
 
     return new Response('success')
@@ -59,7 +70,6 @@ export default {
 
 async function handleAppMentionEvent ({ botId, slackCli }: Config, event: AppMentionEvent): Promise<void> {
   const [command, ...args] = event.text.trim().replace(`<@${botId}> `, '').split(' ')
-  console.log(' [DEBUG] COMMAND', { command, args: JSON.stringify(args) })
 
   switch (command) {
     case 'echo':
