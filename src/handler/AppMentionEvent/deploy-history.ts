@@ -32,7 +32,6 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
         .then(({ data: { commit: { message, author } } }) => ({
           ...d,
           commit_message: message.split('\n')[0] ?? 'Unknown commit message',
-          commit_author_name: author?.name ?? 'Unknown author',
         }))
     )))
 
@@ -41,7 +40,7 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
       // https://developers.cloudflare.com/workers/examples/geolocation-custom-styling/
       const formattedCreatedAt = new Date(d.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
 
-      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} (by ${d.commit_author_name}) ${formattedCreatedAt}`
+      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} (by ${d.creator?.login ?? 'Unknown authro'}) ${formattedCreatedAt}`
     })
 
     messages.push(message)
