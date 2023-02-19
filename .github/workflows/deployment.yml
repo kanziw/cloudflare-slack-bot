@@ -23,7 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.env.target_environment }}
     steps:
+      - run: echo ${{ github.env.target_environment }}
+      - run: echo ${{ env.target_environment }}
       - uses: actions/checkout@v3
-      - uses: cloudflare/wrangler-action@2.0.0
+      - name: Deploy to ${{ github.env.target_environment}}
+        uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
