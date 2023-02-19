@@ -20,9 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}
     steps:
-      - run: echo "${{ job.environment }}"
+      - name: Parse Environment
+        run: |
+          echo "ENVIRONMENT=${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}" >> $GITHUB_ENV
+
       - uses: actions/checkout@v3
-      - name: Deploy to Cloudflare Workers
+      - name: Deploy to ${{ env.ENVIRONMENT }}
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
