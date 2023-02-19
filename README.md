@@ -16,19 +16,24 @@ $ yarn
     - Go to Features > OAuth & Permissions in Slack app dashboard
     - Bot User OAuth Token: starts with `xoxb-`
     - Minimum scopes: `app_mentions:read` & `chat:write`
-- SLACK_VERIFIACTION_CODE
+- SLACK_VERIFICATION_CODE
     - Go to Settings > Basic Information in Slack app dashboard
     - App Credentials > Verification Token
+- GH_PERSONAL_ACCESS_TOKEN
+    - GitHub Personal Access Token
+    - Mininum scopes: Deployments > Read & Write
 
 ```shell
 $ echo $SLACK_BOT_TOKEN | yarn wrangler secret put SLACK_BOT_TOKEN
-$ echo $SLACK_VERIFIACTION_CODE | yarn wrangler secret put SLACK_VERIFIACTION_CODE
+$ echo $SLACK_VERIFICATION_CODE | yarn wrangler secret put SLACK_VERIFICATION_CODE
+$ echo $GH_PERSONAL_ACCESS_TOKEN | yarn wrangler secret put GH_PERSONAL_ACCESS_TOKEN 
 ```
 
 Use `.dev.vars` for development. [ref](https://developers.cloudflare.com/workers/platform/environment-variables/#secrets-in-development)
 ```
 SLACK_BOT_TOKEN=xoxb-XXXXXXXXXXXXXXXX
-SLACK_VERIFIACTION_CODE=XXXXXXXXXXXXXXX
+SLACK_VERIFICATION_CODE=XXXXXXXXXXXXXXX
+GH_PERSONAL_ACCESS_TOKEN=ghp_XXXXXXXXXXXXXX
 ```
 
 ## Deploy
