@@ -17,9 +17,13 @@ jobs:
       - uses: actions/github-script@v6
         with:
           script: |
-            console.log(' EVENT', JSON.stringify(context.event ?? {}));
-            console.log(' PAYLOAD', JSON.stringify(context.payload ?? {}));
-            console.log(' REPO', JSON.stringify(context.repo ?? {}));
+            console.log(' EVENT', JSON.stringify(context.event ?? {}, null, 2));
+            console.log(' PAYLOAD', JSON.stringify(context.payload ?? {}, null, 2));
+            console.log(' REPO', JSON.stringify(context.repo ?? {}), null, 2);
+      - run: echo "${{ context.deployment }}"
+      - run: echo "${{ context.deployment.environment }}"
+      - run: echo "${{ context.payload }}"
+      - run: echo "${{ context.github }}"
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
         with:
