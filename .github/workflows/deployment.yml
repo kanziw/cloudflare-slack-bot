@@ -17,7 +17,6 @@ on:
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
     environment: ${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}
     steps:
