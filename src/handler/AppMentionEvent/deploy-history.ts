@@ -27,12 +27,12 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
       environment,
       // in deployment trigger, deployment histories were generated with duplication
       // so, filter out duplicated histories using "deployment.performed_via_github_app" existence
-      per_page: DEFAULT_PAGE_SIZE * 2,
+      per_page: DEFAULT_PAGE_SIZE,
     })
 
     const dd = await Promise.all(
       deployments
-        .filter(d => !!d.performed_via_github_app)
+        // .filter(d => !!d.performed_via_github_app)
         .map(async d => (
           await githubCli.repos
             .getCommit({ ...repos, ref: d.sha })
