@@ -2,6 +2,7 @@ import { Octokit } from '@octokit/rest'
 import { type AppMentionEvent, slackClient, type SlackClient, parseSlackRequest } from './slack'
 import to from 'await-to-js'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
+import { parseRef } from './github'
 
 export interface Env {
   // Vars
@@ -15,8 +16,11 @@ export interface Env {
 
 const helpMessage = `I have the following features
 
-\`@botname echo <Message>\`
+\`@botname echo <message>\`
 > Echoes the message back to the channel
+
+\`@botname deploy <repo> <environment> <ref>\`
+> Trigger GitHub Deployment for the given repo, environment and ref
 `
 
 interface Config {
@@ -85,11 +89,7 @@ async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, ev
       }
       break
     case 'deploy': {
-      let [environment, fullRepo, ref] = args
-      if (environment !== 'production') {
-        await slackCli.postMessage(event.channel, 'Only production environment is supported')
-        return
-      }
+      const [fullRepo, environment, ref] = args
 
       let [owner, repo] = fullRepo.split('/')
       if (!repo) {
@@ -97,11 +97,17 @@ async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, ev
         owner = 'kanziw'
       }
 
-      if (!ref) {
-        ref = ''
+      if (environment !== 'production') {
+        await slackCli.postMessage(event.channel, 'Only production environment is supported')
+        return
       }
 
-      await githubCli.repos.createDeployment({ owner, repo, ref, environment })
+      await githubCli.repos.createDeployment({
+        owner,
+        repo,
+        ref: parseRef(ref),
+        environment,
+      })
       break
     }
     default:
