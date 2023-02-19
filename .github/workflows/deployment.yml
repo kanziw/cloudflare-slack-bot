@@ -9,9 +9,10 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy'
+        description: Environment to deploy
         type: environment
         required: true
+        default: staging
   deployment:
 
 env:
@@ -20,7 +21,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ env.target_environment }}
+    environment: env.target_environment
     steps:
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
