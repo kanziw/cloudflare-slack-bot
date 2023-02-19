@@ -21,7 +21,7 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: env.target_environment
+    environment: ${{ github.env.target_environment }}
     steps:
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
