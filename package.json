@@ -18,6 +18,7 @@
     "logs": "wrangler tail cloudflare-slack-bot --format=pretty"
   },
   "dependencies": {
+    "@kanziw/time": "^0.2.3",
     "@octokit/rest": "^19.0.7",
     "await-to-js": "^3.0.0",
     "http-status-codes": "^2.2.0"

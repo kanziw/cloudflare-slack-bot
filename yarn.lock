@@ -406,6 +406,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kanziw/time@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@kanziw/time@npm:0.2.3"
+  checksum: 8549490e8c6e988b00302b2bf1f55306644d6b58d1180a0cd04b5d1010b7e926ad07029d7124b4ff8ebd36dd223390cac9ad5353177064251ae2a0fcc3e41290
+  languageName: node
+  linkType: hard
+
 "@miniflare/cache@npm:2.12.0":
   version: 2.12.0
   resolution: "@miniflare/cache@npm:2.12.0"
@@ -1438,6 +1445,7 @@ __metadata:
   resolution: "cloudflare-slack-bot@workspace:."
   dependencies:
     "@cloudflare/workers-types": ^4.20230215.0
+    "@kanziw/time": ^0.2.3
     "@miniflare/core": ^2.12.0
     "@octokit/rest": ^19.0.7
     "@typescript-eslint/eslint-plugin": ^5.0.0
