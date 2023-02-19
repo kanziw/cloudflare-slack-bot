@@ -25,11 +25,15 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
     return
   }
 
-  await githubCli.repos.createDeployment({
+  await githubCli.repos.createDispatchEvent({
     ...repos,
-    ref: parseRef(ref),
-    environment,
-    auto_merge: false,
-    required_contexts: [],
+    event_type: 'Deployment',
   })
+  // await githubCli.repos.createDeployment({
+  //   ...repos,
+  //   ref: parseRef(ref),
+  //   environment,
+  //   auto_merge: false,
+  //   required_contexts: [],
+  // })
 }
