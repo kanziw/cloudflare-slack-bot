@@ -4,9 +4,15 @@ concurrency: production
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
   workflow_dispatch:
+    inputs:
+      ref:
+        type: string
+        description: Target ref to deploy
+        required: false
+        default: ''
 
 jobs:
   deploy:
@@ -14,6 +20,8 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs?.ref ?? '' }}
       - uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
