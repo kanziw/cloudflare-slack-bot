@@ -1,5 +1,4 @@
 import { fullShaToLinkWithShortSha } from './fullShaToLinkWithShortSha'
-import { kstFormat } from '@kanziw/time'
 import { parseFullRepo } from './parseFullRepo'
 import { type CommandHandler } from './types'
 
@@ -39,7 +38,9 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
 
     dd.forEach(d => {
       const createdAt = new Date(d.created_at)
-      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} ${d.commit_author_name} ${kstFormat(createdAt).datetime()}`
+      createdAt.setMinutes(createdAt.getMinutes() + (60 * 9))
+
+      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} ${d.commit_author_name} ${createdAt.toString()}`
     })
 
     messages.push(message)

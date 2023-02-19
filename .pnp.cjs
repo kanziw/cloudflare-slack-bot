@@ -29,7 +29,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["@cloudflare/workers-types", "npm:4.20230215.0"],\
-            ["@kanziw/time", "npm:0.2.3"],\
             ["@miniflare/core", "npm:2.12.0"],\
             ["@octokit/rest", "npm:19.0.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:36a6c73195bd7dd8881f3a5aa53877e005fb80d17f7100d89dd62b17024741e8720dacaaebc11c66751415a7f46207e9ef6315af71387c0f90053ead90dac22d#npm:5.52.0"],\
@@ -527,15 +526,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@iarna-toml-npm-2.2.5-6da1399e8e-b63b2b2c4f.zip/node_modules/@iarna/toml/",\
           "packageDependencies": [\
             ["@iarna/toml", "npm:2.2.5"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@kanziw/time", [\
-        ["npm:0.2.3", {\
-          "packageLocation": "./.yarn/cache/@kanziw-time-npm-0.2.3-72fc1eb051-8549490e8c.zip/node_modules/@kanziw/time/",\
-          "packageDependencies": [\
-            ["@kanziw/time", "npm:0.2.3"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1820,7 +1810,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["cloudflare-slack-bot", "workspace:."],\
             ["@cloudflare/workers-types", "npm:4.20230215.0"],\
-            ["@kanziw/time", "npm:0.2.3"],\
             ["@miniflare/core", "npm:2.12.0"],\
             ["@octokit/rest", "npm:19.0.7"],\
             ["@typescript-eslint/eslint-plugin", "virtual:36a6c73195bd7dd8881f3a5aa53877e005fb80d17f7100d89dd62b17024741e8720dacaaebc11c66751415a7f46207e9ef6315af71387c0f90053ead90dac22d#npm:5.52.0"],\
