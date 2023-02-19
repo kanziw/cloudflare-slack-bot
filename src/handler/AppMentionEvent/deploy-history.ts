@@ -36,7 +36,7 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
         .map(async d => (
           await githubCli.repos
             .getCommit({ ...repos, ref: d.sha })
-            .then(({ data: { commit: { message, author } } }) => ({
+            .then(({ data: { commit: { message } } }) => ({
               ...d,
               commit_message: message.split('\n')[0] ?? 'Unknown commit message',
             }))
