@@ -20,10 +20,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}
     steps:
-      - run: echo "${{ jobs.deploy.environment }}"
       - run: echo "${{ job.environment }}"
       - uses: actions/checkout@v3
-      - name: Deploy to ${{ jobs.deploy.environment }}
+      - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
