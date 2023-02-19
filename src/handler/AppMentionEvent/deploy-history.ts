@@ -37,10 +37,9 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
     )))
 
     dd.forEach(d => {
-      const createdAt = new Date(d.created_at)
-      createdAt.setMinutes(createdAt.getMinutes() + (60 * 9))
+      const formattedCreatedAt = new Date(d.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
 
-      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} ${d.commit_author_name} ${createdAt.toString()}`
+      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} ${d.commit_author_name} ${formattedCreatedAt}`
     })
 
     messages.push(message)
