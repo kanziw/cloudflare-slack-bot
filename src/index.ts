@@ -103,6 +103,8 @@ async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, ev
         repo,
         ref: parseRef(ref),
         environment,
+        auto_merge: false,
+        required_contexts: [],
       })
       break
     }
