@@ -1,3 +1,4 @@
+import { Octokit } from '@octokit/rest'
 import { type AppMentionEvent, slackClient, type SlackClient, parseSlackRequest } from './slack'
 import to from 'await-to-js'
 import { getReasonPhrase, StatusCodes } from 'http-status-codes'
@@ -9,6 +10,7 @@ export interface Env {
   // Secrets
   SLACK_BOT_TOKEN: string
   SLACK_VERIFICATION_CODE: string
+  GH_PERSONAL_ACCESS_TOKEN: string
 }
 
 const helpMessage = `I have the following features
@@ -22,6 +24,7 @@ interface Config {
   slackVerificationCode: string
 
   slackCli: SlackClient
+  githubCli: Octokit['rest']
 }
 let cfg: Config
 
@@ -32,10 +35,14 @@ export default {
     _ctx: ExecutionContext,
   ): Promise<Response> {
     if (!cfg) {
+      const octokit = new Octokit({
+        auth: env.GH_PERSONAL_ACCESS_TOKEN,
+      })
       cfg = {
         botId: env.BOT_ID,
         slackVerificationCode: env.SLACK_VERIFICATION_CODE,
         slackCli: slackClient({ botToken: env.SLACK_BOT_TOKEN }),
+        githubCli: octokit.rest,
       }
     }
 
@@ -68,7 +75,7 @@ export default {
   },
 }
 
-async function handleAppMentionEvent ({ botId, slackCli }: Config, event: AppMentionEvent): Promise<void> {
+async function handleAppMentionEvent ({ botId, slackCli, githubCli }: Config, event: AppMentionEvent): Promise<void> {
   const [command, ...args] = event.text.trim().replace(`<@${botId}> `, '').split(' ')
 
   switch (command) {
@@ -77,6 +84,26 @@ async function handleAppMentionEvent ({ botId, slackCli }: Config, event: AppMen
         await slackCli.postMessage(event.channel, args.join(' '))
       }
       break
+    case 'deploy': {
+      let [environment, fullRepo, ref] = args
+      if (environment !== 'produdction') {
+        await slackCli.postMessage(event.channel, 'Only production environment is supported')
+        return
+      }
+
+      let [owner, repo] = fullRepo.split('/')
+      if (!repo) {
+        repo = owner
+        owner = 'kanziw'
+      }
+
+      if (!ref) {
+        ref = ''
+      }
+
+      await githubCli.repos.createDeployment({ owner, repo, ref })
+      break
+    }
     default:
       await slackCli.postMessage(event.channel, helpMessage)
   }
