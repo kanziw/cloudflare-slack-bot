@@ -25,11 +25,18 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
     return
   }
 
-  await githubCli.repos.createDeployment({
+  const { data } = await githubCli.repos.createDeployment({
     ...repos,
     ref: parseRef(ref),
     environment,
     auto_merge: false,
     required_contexts: [],
   })
+
+  if ('id' in data) {
+    await githubCli.repos.deleteDeployment({
+      ...repos,
+      deployment_id: data.id,
+    })
+  }
 }
