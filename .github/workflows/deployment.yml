@@ -14,14 +14,14 @@ on:
         required: true
   deployment:
 
+env:
+  ENVIRONMENT: ${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}
+    environment: ${{ env.ENVIRONMENT }}
     steps:
-      - run: echo "${{ github.event.deployment.environment }}"
-      - run: echo "${{ github.event.inputs.environment }}"
-      - run: echo "${{ github.event.deployment.environment || github.event.inputs.environment || 'production' }}"
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
         with:
