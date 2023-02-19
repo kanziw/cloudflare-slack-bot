@@ -3,7 +3,12 @@ name: Deployment
 concurrency: production
 
 on:
-  - deployment
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  deployment:
+    environments: [production]
 
 jobs:
   deploy:
