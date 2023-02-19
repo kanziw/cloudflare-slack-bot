@@ -1,18 +1,18 @@
 import { parseRef } from '../../github'
+import { parseFullRepo } from './parseFullRepo'
 import { type CommandHandler } from './types'
 
 export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli }, event, args): Promise<void> => {
-  const [fullRepo, environment, ref] = args
-
-  let [owner, repo] = fullRepo.split('/')
-  if (!repo) {
-    repo = owner
-    owner = 'kanziw'
+  if (args.length < 3) {
+    throw new Error('Invalid arguments')
   }
 
+  const [fullRepo, environment, ref] = args
+  const repos = parseFullRepo(fullRepo)
+
+  // TODO: repo not found
   const { data: { environments = [] } } = await githubCli.repos.getAllEnvironments({
-    owner,
-    repo,
+    ...repos,
   })
 
   const environmentNames = environments.map(e => e.name)
@@ -21,14 +21,13 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
       event.channel,
       `*Deployment failed*
 > Supported environments: ${environmentNames.map(n => `\`${n}\``).join(', ')}
-> If this is a new deployment -> <https://github.com/${owner}/${repo}/settings/environments/new|Click>`,
+> If this is a new deployment -> <https://github.com/${repos.owner}/${repos.repo}/settings/environments/new|Click>`,
     )
     return
   }
 
   await githubCli.repos.createDeployment({
-    owner,
-    repo,
+    ...repos,
     ref: parseRef(ref),
     environment,
     auto_merge: false,
