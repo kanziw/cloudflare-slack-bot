@@ -19,9 +19,17 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - id: vars
+        uses: actions/github-script@v6
+        with:
+          script: |
+            console.log('>>', JSON.stringify(context, null, 2));
+            return { 
+              TARGET_REF: context.payload.inputs?.ref ?? '',
+            };
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs?.ref ?? '' }}
+          ref: ${{ fromJSON(steps.vars.outputs.result).TARGET_REF }}
       - uses: cloudflare/wrangler-action@2.0.0
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
