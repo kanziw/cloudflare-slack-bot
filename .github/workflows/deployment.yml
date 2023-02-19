@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            console.log(' EVENT', JSON.stringify(context.event ?? {}));
+            console.log(' PAYLOAD', JSON.stringify(context.payload ?? {}));
+            console.log(' REPO', JSON.stringify(context.repo ?? {}));
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
         with:
