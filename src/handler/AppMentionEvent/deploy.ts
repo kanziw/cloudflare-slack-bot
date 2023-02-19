@@ -31,6 +31,5 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
     environment,
     auto_merge: false,
     required_contexts: [],
-    task: 'trigger',
   })
 }
