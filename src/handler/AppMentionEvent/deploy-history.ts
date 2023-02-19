@@ -31,15 +31,15 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
         .getCommit({ ...repos, ref: d.sha })
         .then(({ data: { commit: { message, author } } }) => ({
           ...d,
-          commit_message: message,
-          commit_author_name: author?.name ?? 'UNKNOWN',
+          commit_message: message.split('\n')[0] ?? 'Unknown commit message',
+          commit_author_name: author?.name ?? 'Unknown author',
         }))
     )))
 
     dd.forEach(d => {
       const formattedCreatedAt = new Date(d.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
 
-      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} ${d.commit_author_name} ${formattedCreatedAt}`
+      message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} (by ${d.commit_author_name}) ${formattedCreatedAt}`
     })
 
     messages.push(message)
