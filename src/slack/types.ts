@@ -1,5 +1,10 @@
-interface BaseSlackEvent { type: 'url_verification' | 'event_callback' | unknown }
-interface BaseEvent { type: 'app_mention' | unknown }
+interface BaseSlackEvent {
+  type: 'url_verification' | 'event_callback' | unknown
+}
+interface BaseEvent {
+  // available types: https://api.slack.com/events?filter=Events
+  type: 'app_mention' | unknown
+}
 
 export type SlackEvent = UrlVerificationEvent | EventCallbackEvent
 

@@ -7,4 +7,5 @@ BOT_ID="U02RWTNJFPS"
 
 # The necessary secrets are:
 # - SLACK_BOT_TOKEN
-# Run `echo <VALUE> | wrangler secret put <NAME>` for each of these
+# - SLACK_VERIFIACTION_CODE
+# Run `echo <VALUE> | yarn wrangler secret put <NAME>` for each of these
