@@ -10,6 +10,7 @@ export const handleDeployCommand: CommandHandler = async ({ slackCli, githubCli 
   const [fullRepo, environment, ref] = args
   const repos = parseFullRepo(fullRepo)
 
+  // TODO: repo not found
   const { data: { environments = [] } } = await githubCli.repos.getAllEnvironments({
     ...repos,
   })
