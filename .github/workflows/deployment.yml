@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Worker
+name: Deployment
 
 concurrency: production
 
