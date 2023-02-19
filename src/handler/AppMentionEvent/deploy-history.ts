@@ -37,6 +37,8 @@ export const handleDeployHistoryCommand: CommandHandler = async ({ slackCli, git
     )))
 
     dd.forEach(d => {
+      // TODO: Parse locale and timezone from request
+      // https://developers.cloudflare.com/workers/examples/geolocation-custom-styling/
       const formattedCreatedAt = new Date(d.created_at).toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })
 
       message += `\n\`${fullShaToLinkWithShortSha(d.sha, repos)}\` ${d.commit_message} (by ${d.commit_author_name}) ${formattedCreatedAt}`
