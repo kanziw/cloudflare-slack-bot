@@ -3,32 +3,13 @@ name: Deployment
 concurrency: production
 
 on:
-  # push:
-    # branches:
-    #   - main
-  workflow_dispatch:
-  #   inputs:
-  #     ref:
-  #       type: string
-  #       description: Target ref to deploy
-  #       required: false
-  #       default: ''
+  - deployment
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      # - id: vars
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #       return { 
-      #         TARGET_REF: context.payload.inputs?.ref ?? '',
-      #       };
-      # - uses: actions/checkout@v3
-      #   with:
-      #     ref: ${{ fromJSON(steps.vars.outputs.result).TARGET_REF }}
       - uses: actions/checkout@v3
       - uses: cloudflare/wrangler-action@2.0.0
         with:
