@@ -16,5 +16,5 @@ export const handleAppMentionEvent = async (cfg: Config, event: AppMentionEvent)
     }
   })()
 
-  await handler(cfg, event, args)
+  await handler(cfg, event, args.filter(Boolean))
 }
