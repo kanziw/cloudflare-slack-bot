@@ -10,6 +10,9 @@ const helpMessage = `I have the following features
 
 \`@botname deploy-history <repo>\`
 > List GitHub Deployment histories for the given repo group by environment
+
+\`@botname deploy-status <repo> <size:=5>\`
+> List latest {size} commits with deployment status with environment
 `
 
 export const handleHelpCommand: CommandHandler = async ({ slackCli }, event): Promise<void> => {
