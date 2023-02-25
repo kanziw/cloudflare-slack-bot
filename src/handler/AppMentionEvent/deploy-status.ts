@@ -61,7 +61,7 @@ export const handleDeployStatusCommand: CommandHandler = async ({ slackCli, gith
 
   const messageBody = commitsWithEnvironments.map(c => {
     const messageEnv = c.environments.length ? ` - ${c.environments.map(e => `\`${e}\``).join(', ')}` : ''
-    return `> ${fullShaToLinkWithShortSha(c.sha, repos)} ${c.message}${messageEnv}`
+    return `> \`${fullShaToLinkWithShortSha(c.sha, repos)}\` ${c.message}${messageEnv}`
   }).join('\n')
 
   await slackCli.postMessage(event.channel, messageHeader + messageBody)
