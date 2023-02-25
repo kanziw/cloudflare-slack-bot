@@ -2,6 +2,8 @@ import { fullShaToLinkWithShortSha } from './fullShaToLinkWithShortSha'
 import { parseFullRepo } from './parseFullRepo'
 import { type CommandHandler } from './types'
 
+const DEFAULT_PAGE_SIZE = 5
+
 export const handleDeployStatusCommand: CommandHandler = async ({ slackCli, githubCli }, event, args): Promise<void> => {
   if (args.length < 1) {
     throw new Error('Invalid arguments')
@@ -12,7 +14,7 @@ export const handleDeployStatusCommand: CommandHandler = async ({ slackCli, gith
 
   const { data: commits } = await githubCli.repos.listCommits({
     ...repos,
-    per_page: parseInt(size, 10) || 5,
+    per_page: parseInt(size, 10) || DEFAULT_PAGE_SIZE,
   })
 
   const messageHeader = `*Deployment Status* - <https://github.com/${repos.owner}/${repos.repo}|${fullRepo}>\n`
